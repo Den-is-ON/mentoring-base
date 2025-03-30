@@ -4,9 +4,9 @@ import { IUser } from "../interfaces/user.interface";
 
 @Injectable({ providedIn: 'root' })
 export class UsersService {
-    
+
     private usersSubject$ = new BehaviorSubject<IUser[]>([])
-    users$ = this.usersSubject$.asObservable()
+    public readonly users$ = this.usersSubject$.asObservable()
 
     setUsers(users: IUser[]) {
         this.usersSubject$.next(users)

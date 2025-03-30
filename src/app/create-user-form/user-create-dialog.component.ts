@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogRef } from "@angular/material/dialog";
 import { UserCreateButtonComponent } from "./create-user-dialog/user-create-button.component";
 import { MatSnackBar } from "@angular/material/snack-bar";
-
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-user-create-dialog',
