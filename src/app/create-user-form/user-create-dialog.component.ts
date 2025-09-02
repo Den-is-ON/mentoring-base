@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, NgModule } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogRef } from "@angular/material/dialog";
 import { UserCreateButtonComponent } from "./create-user-dialog/user-create-button.component";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { NgIf } from "@angular/common";
+import { CommonModule, NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-user-create-dialog',
@@ -22,7 +22,7 @@ import { NgIf } from "@angular/common";
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    
+    CommonModule
   ]
 })
 

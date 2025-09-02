@@ -10,10 +10,8 @@ export interface IUser {
 @Injectable({ providedIn: 'root' })
 
 export class UserService {
-    // private currentUser: { isAdmin: boolean } | null = null;
     private readonly userSubject$ = new BehaviorSubject<IUser | null>(null)
     public readonly user$ = this.userSubject$.asObservable()
-
 
     private user: IUser = {
         name: 'Ильнур',
@@ -22,12 +20,10 @@ export class UserService {
     }
 
     loginAsAdmin() {
-        console.log('Вошли как админ')
         this.userSubject$.next({ ...this.user, isAdmin: true })
     }
 
     loginAsUser() {
-        console.log('Вошли как пользователь')
         this.userSubject$.next({ ...this.user, isAdmin: false })
     }
 
@@ -37,8 +33,5 @@ export class UserService {
 
     logout() {
         this.userSubject$.next(null)
-        console.log(this.userSubject$)
     }
-
-    
 }

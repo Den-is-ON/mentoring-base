@@ -6,6 +6,10 @@ import { UsersService } from "../services/user.service";
 import { ICreateUser, IUser } from "../interfaces/user.interface";
 import { UserCreateButtonComponent } from "../create-user-form/create-user-dialog/user-create-button.component";
 import { CardShadowDirective } from "../directives/card-shadow.directive";
+import { Store } from "@ngrx/store";
+import { UserActions } from "./store/user.actions";
+import { selectUsers } from "./store/users.selectors";
+import { UsersEffects } from "./store/users.effects";
 
 @Component({
     selector: 'app-users-list',
@@ -13,17 +17,22 @@ import { CardShadowDirective } from "../directives/card-shadow.directive";
     styleUrl: './users-list.component.scss',
     standalone: true,
     imports: [NgFor, UserCardComponent, AsyncPipe, UserCreateButtonComponent, CardShadowDirective],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [
+        UsersEffects
+    ]
 })
 
 export class UsersListComponent {
     readonly usersApiServise = inject(UsersApiService)
     readonly usersService = inject(UsersService)
+    private readonly store = inject(Store)
+    public readonly users$ = this.store.select(selectUsers)
 
     constructor() {
         this.usersApiServise.getUsers().subscribe(
             (response: IUser[]) => {
-                this.usersService.setUsers(response)
+                this.store.dispatch(UserActions.set({ users: response }))
             },
             (error: any) => {
                 console.error('Ошибка при получении пользователей:', error);
@@ -36,25 +45,28 @@ export class UsersListComponent {
     }
 
     public deleteUser(id: number) {
-        this.usersService.deleteUsers(id)
+        this.store.dispatch(UserActions.delete({ id }))
     }
 
     public editUser(user: IUser) {
-        this.usersService.editUsers(user)
+        this.store.dispatch(UserActions.edit({ user }))
     }
 
     public createUser(formData: ICreateUser) {
-        this.usersService.createUsers({
-            id: new Date().getTime(),
-            name: formData.name,
-            email: formData.email,
-            website: formData.website,
-            company: {
-                name: formData.company.name,
-            },
-            phone: formData.phone
-        })
-        console.log('Данные формы: ', event)
+        this.store.dispatch(
+            UserActions.create({
+                user: {
+                    id: new Date().getTime(),
+                    name: formData.name,
+                    email: formData.email,
+                    website: formData.website,
+                    company: {
+                        name: formData.company.name,
+                    },
+                    phone: formData.phone
+                }
+            })
+        )
     }
 }
 
