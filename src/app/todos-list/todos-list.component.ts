@@ -5,9 +5,9 @@ import { TodoCardComponent } from "./todo-card/todo-card.component";
 import { TodosService } from "../services/todo.service";
 import { CreateTodoFormComponent } from "../create-todo-form/create-todo-form.component";
 import { Store } from "@ngrx/store";
-
 import { TodoActions } from "./store/todo.actions";
 import { selectTodos } from "./store/todos.selectors";
+import { ITodo } from "../interfaces/todo.interface";
 
 @Component({
     selector: 'app-todos-list',
@@ -26,8 +26,7 @@ export class TodoListComponent {
 
     constructor() {
         this.todosApiService.getTodos().subscribe(
-            (response: any) => {
-                // this.todosService.setTodos(response)
+            (response: ITodo[]) => {
                 this.store.dispatch(TodoActions.set({ todos: response }))
             }
         )
@@ -38,11 +37,10 @@ export class TodoListComponent {
     }
 
     public deleteTodo(id: number) {
-        // this.todosService.deleteTodos(id)
         this.store.dispatch(TodoActions.delete({ id }))
     }
 
-    public createTodo(formData: any) {
+    public createTodo(formData: ITodo) {
         this.store.dispatch(
             TodoActions.create({
                 todo: {

@@ -2,11 +2,11 @@ import { createSelector } from "@ngrx/store";
 import { IUser } from "../../interfaces/user.interface";
 
 interface UserState {
-    users: IUser[]
+    users: IUser[];
 }
 
 interface AppState {
-    users: UserState
+    users: UserState;
 }
 
 export const selectUsersFeature = (state: AppState) => state.users
